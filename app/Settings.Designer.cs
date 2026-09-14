@@ -132,7 +132,7 @@ namespace GHelper
             comboVisual = new RComboBox();
             comboColorTemp = new RComboBox();
             comboGamut = new RComboBox();
-            Gamma = new ();
+            sliderGamma = new Slider();
             panelGammaTitle = new Panel();
             labelGamma = new Label();
             pictureGamma = new PictureBox();
