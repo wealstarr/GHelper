@@ -66,7 +66,7 @@ namespace GHelper.Battery
         {
             int limit = setLimit;
             if (limit < 0) limit = AppConfig.Get("charge_limit");
-            if (limit < 40 || limit > 100) return;
+            if (limit < 25 || limit > 100) return;
 
             if (AppConfig.IsChargeLimit6080())
             {
