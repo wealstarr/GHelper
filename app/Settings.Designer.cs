@@ -132,7 +132,7 @@ namespace GHelper
             comboVisual = new RComboBox();
             comboColorTemp = new RComboBox();
             comboGamut = new RComboBox();
-            sliderGamma = new Slider();
+            Gamma = new ();
             panelGammaTitle = new Panel();
             labelGamma = new Label();
             pictureGamma = new PictureBox();
@@ -351,7 +351,7 @@ namespace GHelper
             sliderBattery.Location = new Point(20, 60);
             sliderBattery.Margin = new Padding(4);
             sliderBattery.Max = 100;
-            sliderBattery.Min = 40;
+            sliderBattery.Min = 25;
             sliderBattery.Name = "sliderBattery";
             sliderBattery.Size = new Size(707, 40);
             sliderBattery.Step = 5;
