@@ -52,7 +52,7 @@ namespace GHelper
         public async Task<List<DriverUpdate>> FetchUpdates(string url, CancellationToken token = default)
         {
             Logger.WriteLine(url);
-            var json = await _httpClient.GetStringAsync(url, token);
+            var json = await _httpClient.GetStringAsync(url);
             var data = JsonSerializer.Deserialize<JsonElement>(json);
             var result = data.GetProperty("Result");
 
@@ -61,7 +61,7 @@ namespace GHelper
             {
                 var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                 Logger.WriteLine(urlFallback);
-                json = await _httpClient.GetStringAsync(urlFallback, token);
+                json = await _httpClient.GetStringAsync(urlFallback);
                 data = JsonSerializer.Deserialize<JsonElement>(json);
             }
 
