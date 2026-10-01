@@ -1719,7 +1719,6 @@ namespace GHelper
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(5, 3, 5, 3);
             MaximizeBox = false;
-            MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             MinimumSize = new Size(1033, 71);
             Name = "Extra";
