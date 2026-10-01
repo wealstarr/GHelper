@@ -107,7 +107,7 @@ namespace GHelper
             comboRotation.SelectedValueChanged += ComboRotation_SelectedValueChanged;
 
             comboAudioMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboAudioMode.SelectedIndex = Math.Clamp(AppConfig.Get("matrix_audio_mode", 0), 0, comboAudioMode.Items.Count - 1);
+            comboAudioMode.SelectedIndex = Compat.Clamp(AppConfig.Get("matrix_audio_mode", 0), 0, comboAudioMode.Items.Count - 1);
             comboAudioMode.SelectedValueChanged += ComboAudioMode_SelectedValueChanged;
 
             textMatrix.Text = AppConfig.GetString("matrix_text", "Hello!");
@@ -122,8 +122,8 @@ namespace GHelper
             InitFontCombo(comboTextFont, "matrix_text_font");
             InitFontCombo(comboTextFont2, "matrix_text2_font");
 
-            numTextSize.Value = Math.Clamp(AppConfig.Get("matrix_text_size", 15), numTextSize.Minimum, numTextSize.Maximum);
-            numTextSize2.Value = Math.Clamp(AppConfig.Get("matrix_text2_size", 15), numTextSize2.Minimum, numTextSize2.Maximum);
+            numTextSize.Value = Compat.Clamp(AppConfig.Get("matrix_text_size", 15), numTextSize.Minimum, numTextSize.Maximum);
+            numTextSize2.Value = Compat.Clamp(AppConfig.Get("matrix_text2_size", 15), numTextSize2.Minimum, numTextSize2.Maximum);
             numTextSize.ValueChanged += TextSettings_Changed;
             numTextSize2.ValueChanged += TextSettings_Changed;
 
@@ -166,7 +166,7 @@ namespace GHelper
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.Items.Add("Default");
             foreach (string font in AniMatrixControl.TextFonts) if (font.Length > 0) combo.Items.Add(font);
-            combo.SelectedIndex = Math.Clamp(AppConfig.Get(param, 0), 0, combo.Items.Count - 1);
+            combo.SelectedIndex = Compat.Clamp(AppConfig.Get(param, 0), 0, combo.Items.Count - 1);
             combo.SelectedValueChanged += TextSettings_Changed;
         }
 
