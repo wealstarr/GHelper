@@ -405,7 +405,7 @@ namespace GHelper.Overlay
             if (keysDown != _dragModeActive && !_dragging)
                 ApplyDragMode(keysDown);
 
-            if (Handle != nint.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
+            if (Handle != IntPtr.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
                     SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
@@ -413,7 +413,7 @@ namespace GHelper.Overlay
             // switching games is handled automatically without manual configuration.
             GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
             int fgPid = (int)fgPidRaw;
-            bool ownWindow = fgPid == 0 || fgPid == Environment.ProcessId;
+            bool ownWindow = fgPid == 0 || fgPid == Net48Compat.ProcessId;
 
             if (_fps != null)
             {
@@ -510,7 +510,7 @@ namespace GHelper.Overlay
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
-            if (Handle != nint.Zero)
+            if (Handle != IntPtr.Zero)
                 User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
         }
 
@@ -521,11 +521,11 @@ namespace GHelper.Overlay
             if (!_active || !_gameOnly) return;
             GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
             int fgPid = (int)fgPidRaw;
-            if (fgPid == 0 || fgPid == Environment.ProcessId) return;
+            if (fgPid == 0 || fgPid == Net48Compat.ProcessId) return;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
-            if (Handle != nint.Zero)
+            if (Handle != IntPtr.Zero)
                 User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
         }
 
@@ -893,7 +893,7 @@ namespace GHelper.Overlay
 
         private void SetTransparentStyle(bool transparent)
         {
-            if (Handle == nint.Zero) return;
+            if (Handle == IntPtr.Zero) return;
             int style = GetWindowLong(Handle, GWL_EXSTYLE);
             style = transparent ? (style | WS_EX_TRANSPARENT_FLAG) : (style & ~WS_EX_TRANSPARENT_FLAG);
             SetWindowLong(Handle, GWL_EXSTYLE, style);
