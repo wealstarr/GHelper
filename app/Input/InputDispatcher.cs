@@ -675,10 +675,9 @@ namespace GHelper.Input
                 case "ghelper":
                     try
                     {
-                        Program.settingsForm.BeginInvoke(delegate
-                        {
+                        Program.settingsForm.BeginInvoke((Action)(() => {
                             Program.SettingsToggle();
-                        });
+                        }));
                     }
                     catch (Exception ex)
                     {
