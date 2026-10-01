@@ -2081,7 +2081,6 @@ namespace GHelper
             Controls.Add(panelPerformance);
             Margin = new Padding(8, 4, 8, 4);
             MaximizeBox = false;
-            MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             MinimumSize = new Size(821, 71);
             Name = "SettingsForm";
