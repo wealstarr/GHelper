@@ -85,12 +85,12 @@ namespace GHelper.Helpers
 
                 if (brightness.HasValue)
                     WriteLightingValue("Brightness",
-                        Math.Clamp(brightness.Value, 0, 100),
+                        Compat.Clamp(brightness.Value, 0, 100),
                         RegistryValueKind.DWord);
 
                 if (speed.HasValue)
                     WriteLightingValue("Speed",
-                        Math.Clamp(speed.Value, 0, 10),
+                        Compat.Clamp(speed.Value, 0, 10),
                         RegistryValueKind.DWord);
 
                 if (color.HasValue)
