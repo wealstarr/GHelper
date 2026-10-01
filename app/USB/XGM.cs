@@ -19,7 +19,7 @@ namespace GHelper.USB
                 /*
                 var devices = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device =>
                     deviceIds.Contains(device.ProductID) &&
-                    device.TryOpen(out _ ) &&
+                    device.CanOpen &&
                     device.GetMaxFeatureReportLength() >= 300);
 
                 foreach (var device in devices)
@@ -30,7 +30,7 @@ namespace GHelper.USB
                 */
                 return DeviceList.Local.GetHidDevices(ASUS_ID).FirstOrDefault(device =>
                     deviceIds.Contains(device.ProductID) &&
-                    device.TryOpen(out _) &&
+                    device.CanOpen &&
                     device.GetMaxFeatureReportLength() >= 300);
             }
             catch (Exception ex)
