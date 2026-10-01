@@ -363,8 +363,8 @@ namespace GHelper.UI
 
             protected override void Pick(MouseEventArgs e)
             {
-                Sat = Math.Clamp((float)e.X / Width, 0, 1);
-                Val = Math.Clamp(1 - (float)e.Y / Height, 0, 1);
+                Sat = Compat.Clamp((float)e.X / Width, 0, 1);
+                Val = Compat.Clamp(1 - (float)e.Y / Height, 0, 1);
                 Invalidate();
                 Picked?.Invoke(Sat, Val);
             }
@@ -410,7 +410,7 @@ namespace GHelper.UI
 
             protected override void Pick(MouseEventArgs e)
             {
-                Hue = Math.Clamp((float)e.Y / Height, 0, 1) * 360;
+                Hue = Compat.Clamp((float)e.Y / Height, 0, 1) * 360;
                 Invalidate();
                 Picked?.Invoke(Hue);
             }
