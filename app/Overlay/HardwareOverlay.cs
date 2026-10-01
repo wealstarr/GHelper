@@ -362,7 +362,7 @@ namespace GHelper.Overlay
             {
                 int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
                 if (i < 0) continue;
-                string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                string[] p = full[i..].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 string s = p.Length >= 2 ? p[0] + " " + p[1] : p[0];
                 if (p.Length >= 3 && p[2] == "Ti") s += " Ti";
                 return s;
@@ -387,7 +387,7 @@ namespace GHelper.Overlay
                 return m.Success ? "Ryzen " + m.Value : "Ryzen";
             }
 
-            return name.Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } t ? t[0] : "";
+            return name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } t ? t[0] : "";
         }
 
         private static string FormatFan(int? fan)
