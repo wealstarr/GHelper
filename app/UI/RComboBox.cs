@@ -216,7 +216,7 @@ namespace GHelper.UI
                 var ps = new PAINTSTRUCT();
                 bool shoulEndPaint = false;
                 nint dc;
-                if (m.WParam == nint.Zero)
+                if (m.WParam == IntPtr.Zero)
                 {
                     dc = BeginPaint(Handle, ref ps);
                     m.WParam = dc;
