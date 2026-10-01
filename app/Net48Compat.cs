@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using HidSharp;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,17 @@ namespace GHelper
             }
         }
         public static int ProcessId => System.Diagnostics.Process.GetCurrentProcess().Id;
+        public static bool CanOpen(HidDevice device)
+        {
+            try
+            {
+                HidStream stream;
+                if (!device.TryOpen(out stream)) return false;
+                stream.Dispose();
+                return true;
+            }
+            catch { return false; }
+        }
         public static void Fill<T>(T[] array, T value) { for (int i = 0; i < array.Length; i++) array[i] = value; }
         public static T[] Slice<T>(T[] array, int start, int end) { var result = new T[end - start]; Array.Copy(array, start, result, 0, result.Length); return result; }
         public static object Invoke(this System.Windows.Forms.Control control, Action action) { return control.Invoke((Delegate)action); }
