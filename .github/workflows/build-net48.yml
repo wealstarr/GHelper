@@ -19,5 +19,5 @@ jobs:
       uses: microsoft/setup-msbuild@v3
     - name: Restore and build
       run: msbuild app/GHelper.sln /restore /p:Configuration=Release /p:Platform=x64 /v:minimal
-      - name: Publish smoke test
-        run: msbuild app/GHelper.sln /t:Publish /p:Configuration=Release /p:Platform=x64 /v:minimal
+    - name: Publish smoke test
+      run: msbuild app/GHelper.sln /t:Publish /p:Configuration=Release /p:Platform=x64 /v:minimal
