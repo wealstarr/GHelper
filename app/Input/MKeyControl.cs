@@ -141,7 +141,7 @@ namespace GHelper.Input
                     if (count < 1 || count > 8 || 5 + count > length) continue;
 
                     Logger.WriteLine($"MKey bindings: {BitConverter.ToString(response, 0, Math.Min(16, length))}");
-                    defaults = response[5..(5 + count)];
+                    defaults = Net48Compat.Slice(response, 5, 5 + count);
                     MapSlots(count);
                     return true;
                 }
