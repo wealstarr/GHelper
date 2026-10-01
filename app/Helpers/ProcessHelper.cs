@@ -226,7 +226,7 @@ namespace GHelper.Helpers
                 var readTask = cmd.StandardOutput.ReadToEndAsync();
                 if (!readTask.Wait(timeoutMs))
                 {
-                    try { cmd.Kill(entireProcessTree: true); } catch { }
+                    try { cmd.Kill(); } catch { }
                     watch.Stop();
                     Logger.WriteLine(name + " " + args);
                     Logger.WriteLine($"{watch.ElapsedMilliseconds} ms: TIMEOUT after {timeoutMs} ms");
