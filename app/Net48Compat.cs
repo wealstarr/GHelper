@@ -30,8 +30,12 @@ namespace GHelper
         public static async Task WaitAsync(this Task task, TimeSpan timeout)
         {
             if (timeout == Timeout.InfiniteTimeSpan) { await task.ConfigureAwait(false); return; }
-            var completed = await Task.WhenAny(task, Task.Delay(timeout)).ConfigureAwait(false);
-            await completed.ConfigureAwait(false);
+            if (timeout < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(timeout));
+            if (task.IsCompleted) { await task.ConfigureAwait(false); return; }
+            var delay = Task.Delay(timeout);
+            var completed = await Task.WhenAny(task, delay).ConfigureAwait(false);
+            if (completed != task) throw new TimeoutException();
+            await task.ConfigureAwait(false);
         }
 
         public static async Task WaitAsync(this Task task, CancellationToken cancellationToken)
