@@ -792,7 +792,7 @@ namespace GHelper.Peripherals.Keyboard
 
         public void RestoreProfile()
         {
-            Profile = Math.Clamp(AppConfig.Get(ProfileConfigKey, 0), 0, ProfileCount() - 1);
+            Profile = Compat.Clamp(AppConfig.Get(ProfileConfigKey, 0), 0, ProfileCount() - 1);
         }
 
         // 12 00: [11] = active profile, 1-6 with the internal 0 reported as 6
