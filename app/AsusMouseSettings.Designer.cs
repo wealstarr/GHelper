@@ -1707,7 +1707,6 @@ namespace GHelper
             Controls.Add(tableRoot);
             Margin = new Padding(4);
             MaximizeBox = false;
-            MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             Name = "AsusMouseSettings";
             ShowIcon = false;
