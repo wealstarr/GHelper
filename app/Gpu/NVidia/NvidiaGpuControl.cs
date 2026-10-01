@@ -62,7 +62,7 @@ public class NvidiaGpuControl : IGpuControl
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
-        if (Environment.TickCount64 - _lastStateTime < StateCacheMs) return _lastState;
+        if (Net48Compat.TickCount64 - _lastStateTime < StateCacheMs) return _lastState;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
@@ -74,7 +74,7 @@ public class NvidiaGpuControl : IGpuControl
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
             _lastState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
-        _lastStateTime = Environment.TickCount64;
+        _lastStateTime = Net48Compat.TickCount64;
         return _lastState;
     }
 
