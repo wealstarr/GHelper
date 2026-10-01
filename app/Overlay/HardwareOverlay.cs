@@ -286,8 +286,8 @@ namespace GHelper.Overlay
                 int newY = _dragWindowStart.Y + cursor.Y - _dragCursorStart.Y;
                 Screen screen = Screen.FromPoint(cursor);
                 const int margin = 5;
-                newX = Math.Clamp(newX, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
-                newY = Math.Clamp(newY, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+                newX = Compat.Clamp(newX, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
+                newY = Compat.Clamp(newY, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
                 Location = new Point(newX, newY);
                 m.Result = IntPtr.Zero;
                 return;
@@ -758,7 +758,7 @@ namespace GHelper.Overlay
 
             int innerX = x + b, innerW = w - 2 * b;
             int innerY = bodyY + b, innerH = bodyH - 2 * b;
-            int fillH = (int)Math.Round(innerH * Math.Clamp(level, 0, 100) / 100.0);
+            int fillH = (int)Math.Round(innerH * Compat.Clamp(level, 0, 100) / 100.0);
             if (fillH > 0) g.FillRectangle(_batBrush, innerX, innerY + innerH - fillH, innerW, fillH);
             if (fillH < innerH) g.FillRectangle(_batDimBrush, innerX, innerY, innerW, innerH - fillH);
 
@@ -780,7 +780,7 @@ namespace GHelper.Overlay
             var prevSmoothing = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.None;
 
-            int lit = Math.Clamp((int)Math.Ceiling(usage * numCells / 100f), 0, numCells);
+            int lit = Compat.Clamp((int)Math.Ceiling(usage * numCells / 100f), 0, numCells);
             int pitch = cellH + sepH;
 
             for (int i = 0; i < numCells; i++)
@@ -901,7 +901,7 @@ namespace GHelper.Overlay
 
         private void ApplyScale(int next)
         {
-            next = Math.Clamp(next, MinScalePercent, MaxScalePercent);
+            next = Compat.Clamp(next, MinScalePercent, MaxScalePercent);
             if (next == _scalePercent) return;
 
             Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
@@ -925,8 +925,8 @@ namespace GHelper.Overlay
         public void RefreshSettings()
         {
             if (!_active) return;
-            _mode = (OverlayMode)Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
-            _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
+            _mode = (OverlayMode)Compat.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
+            _scalePercent = Compat.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
             ApplyColors();
             ApplyPreset(_mode);
             ApplySensorFlags();
@@ -965,7 +965,7 @@ namespace GHelper.Overlay
         {
             Color gpu = ParseColor("overlay_color_gpu", DefaultGpuColor);
             Color cpu = ParseColor("overlay_color_cpu", DefaultCpuColor);
-            _bgAlpha = Math.Clamp(AppConfig.Get("overlay_alpha", 128), 0, 255);
+            _bgAlpha = Compat.Clamp(AppConfig.Get("overlay_alpha", 128), 0, 255);
 
             _gpuBrush.Dispose();     _gpuBrush = new SolidBrush(gpu);
             _cpuBrush.Dispose();     _cpuBrush = new SolidBrush(cpu);
@@ -1067,8 +1067,8 @@ namespace GHelper.Overlay
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;
-            _mode = (OverlayMode)Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
-            _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
+            _mode = (OverlayMode)Compat.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
+            _scalePercent = Compat.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
             ApplyColors();
             ApplyPreset(_mode);
             _onBattery = _isAlly || _overlayBattery == 1 || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
