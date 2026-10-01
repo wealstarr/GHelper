@@ -967,11 +967,10 @@ namespace GHelper
         public void SetVersionLabel(string label, bool update = false)
         {
             if (InvokeRequired)
-                Invoke(delegate
-                {
+                Invoke((Action)(() => {
                     labelVersion.Text = label;
                     if (update) labelVersion.ForeColor = colorTurbo;
-                });
+                }));
             else
             {
                 labelVersion.Text = label;
@@ -1684,8 +1683,7 @@ namespace GHelper
             if (battery.Length > 0) trayTip += "\n" + battery;
             
             if (Program.settingsForm.IsHandleCreated)
-                Program.settingsForm.BeginInvoke(delegate
-                {
+                Program.settingsForm.BeginInvoke((Action)(() => {
                     labelCPUFan.Text = "CPU" + cpuTemp + "  " + cpuFan;
                     labelGPUFan.Text = "GPU" + gpuTemp + "  " + gpuFan;
 
@@ -1697,7 +1695,7 @@ namespace GHelper
                     
                     labelBattery.Text = battery;
                     if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
-                });
+                }));
 
             if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
         }
@@ -1740,10 +1738,9 @@ namespace GHelper
         public void ShowMode(int mode)
         {
             if (InvokeRequired)
-                Invoke(delegate
-                {
+                Invoke((Action)(() => {
                     VisualiseMode(mode);
-                });
+                }));
             else
                 VisualiseMode(mode);
         }
@@ -1792,11 +1789,10 @@ namespace GHelper
         {
             if (InvokeRequired)
             {
-                Invoke(delegate
-                {
+                Invoke((Action)(() => {
                     labelPerf.Text = modeText;
                     panelPerformance.AccessibleName = labelPerf.Text;
-                });
+                }));
             }
             else
             {
