@@ -454,7 +454,7 @@ public class Adl2
     /// <param name="buffer">input buffer</param>
     private static void Memory_Free_Impl(nint buffer)
     {
-        if (nint.Zero != buffer)
+        if (IntPtr.Zero != buffer)
         {
             Marshal.FreeCoTaskMem(buffer);
         }
