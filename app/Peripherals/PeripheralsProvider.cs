@@ -369,10 +369,9 @@ namespace GHelper.Peripherals
 
         private static void UpdateSettingsView()
         {
-            Program.settingsForm.Invoke(delegate
-            {
+            Program.settingsForm.Invoke((Action)(() => {
                 Program.settingsForm.VisualizePeripherals();
-            });
+            }));
         }
 
         private static List<HidDevice> asusHidDevices = new();
