@@ -44,15 +44,24 @@ namespace GHelper
         static HttpClient CreateHttpClient()
         {
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate");
             client.DefaultRequestHeaders.Add("User-Agent", "C# App");
             return client;
+        }
+
+        static async Task<string> GetStringAsync(string url, CancellationToken token)
+        {
+            using (var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead, token))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
         }
 
         public async Task<List<DriverUpdate>> FetchUpdates(string url, CancellationToken token = default)
         {
             Logger.WriteLine(url);
-            var json = await _httpClient.GetStringAsync(url);
+            var json = await GetStringAsync(url, token);
             var data = JsonSerializer.Deserialize<JsonElement>(json);
             var result = data.GetProperty("Result");
 
@@ -61,7 +70,7 @@ namespace GHelper
             {
                 var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                 Logger.WriteLine(urlFallback);
-                json = await _httpClient.GetStringAsync(urlFallback);
+                json = await GetStringAsync(urlFallback, token);
                 data = JsonSerializer.Deserialize<JsonElement>(json);
             }
 
