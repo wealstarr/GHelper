@@ -1,6 +1,4 @@
 using Microsoft.Win32;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
 
 namespace PawnIO
 {
@@ -10,11 +8,9 @@ namespace PawnIO
 
         private static bool DetectAMD()
         {
-            if (!X86Base.IsSupported) return false;
-            var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
-
-            Span<uint> regs = stackalloc uint[] { (uint)ebx, (uint)edx, (uint)ecx };
-            return MemoryMarshal.Cast<uint, byte>(regs).SequenceEqual("AuthenticAMD"u8);
+            // .NET Framework 4.8 has no System.Runtime.Intrinsics.X86 API.
+            // The processor name is already available from the standard Windows registry.
+            return Name.IndexOf("AMD", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
 
