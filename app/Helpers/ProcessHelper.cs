@@ -226,7 +226,23 @@ namespace GHelper.Helpers
                 var readTask = cmd.StandardOutput.ReadToEndAsync();
                 if (!readTask.Wait(timeoutMs))
                 {
-                    try { cmd.Kill(); } catch { }
+                    try
+                    {
+                        using (var killer = Process.Start(new ProcessStartInfo
+                        {
+                            FileName = Path.Combine(Environment.SystemDirectory, "taskkill.exe"),
+                            Arguments = "/PID " + cmd.Id + " /T /F",
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                        }))
+                        {
+                            killer?.WaitForExit(2000);
+                        }
+                    }
+                    catch
+                    {
+                        try { cmd.Kill(); } catch { }
+                    }
                     watch.Stop();
                     Logger.WriteLine(name + " " + args);
                     Logger.WriteLine($"{watch.ElapsedMilliseconds} ms: TIMEOUT after {timeoutMs} ms");
