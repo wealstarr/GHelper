@@ -21,9 +21,9 @@ namespace GHelper.UI
         {
             try
             {
-                SendMessage(form.Handle, WM_SETICON, ICON_BIG, Icon.ExtractAssociatedIcon(Application.ExecutablePath)!.Handle);
+                SendMessage(form.Handle, WM_SETICON, (IntPtr)ICON_BIG, Icon.ExtractAssociatedIcon(Application.ExecutablePath)!.Handle);
                 IntPtr hIcon = icon.GetHicon();
-                SendMessage(form.Handle, WM_SETICON, ICON_SMALL, hIcon);
+                SendMessage(form.Handle, WM_SETICON, (IntPtr)ICON_SMALL, hIcon);
                 DestroyIcon(hIcon);
             }
             catch (Exception ex)
