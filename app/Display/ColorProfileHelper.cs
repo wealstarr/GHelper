@@ -693,7 +693,22 @@ namespace GHelper.Display
                     string tempZipPath = Path.Combine(extractPath, "temp.zip");
                     File.WriteAllBytes(tempZipPath, zipData);
 
-                    ZipFile.ExtractToDirectory(tempZipPath, extractPath);
+                    string tempExtractPath = Path.Combine(extractPath, ".ghelper-extract-" + Guid.NewGuid().ToString("N"));
+                    try
+                    {
+                        ZipFile.ExtractToDirectory(tempZipPath, tempExtractPath);
+                        foreach (string source in Directory.GetFiles(tempExtractPath, "*", SearchOption.AllDirectories))
+                        {
+                            string relative = source.Substring(tempExtractPath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                            string destination = Path.Combine(extractPath, relative);
+                            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+                            File.Copy(source, destination, true);
+                        }
+                    }
+                    finally
+                    {
+                        if (Directory.Exists(tempExtractPath)) Directory.Delete(tempExtractPath, true);
+                    }
 
                     File.Delete(tempZipPath);
                 }
