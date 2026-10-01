@@ -92,7 +92,7 @@ public class AmdGpuControl : IGpuControl
 
     }
 
-    public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
+    public bool IsValid => _isReady && _adlContextHandle != IntPtr.Zero;
 
     public int? GetCurrentTemperature()
     {
@@ -117,10 +117,10 @@ public class AmdGpuControl : IGpuControl
 
     private bool GetPMLog(out ADLPMLogDataOutput log)
     {
-        if (Environment.TickCount64 - _pmLogTime >= PMLogCacheMs)
+        if (Net48Compat.TickCount64 - _pmLogTime >= PMLogCacheMs)
         {
             _pmLogValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _pmLog) == Adl2.ADL_SUCCESS;
-            _pmLogTime = Environment.TickCount64;
+            _pmLogTime = Net48Compat.TickCount64;
         }
         log = _pmLog;
         return _pmLogValid;
@@ -164,7 +164,7 @@ public class AmdGpuControl : IGpuControl
 
     public int? GetiGpuUse()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return null;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return null;
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
@@ -181,11 +181,11 @@ public class AmdGpuControl : IGpuControl
     private bool GetPMLogiGpu(out ADLPMLogDataOutput log)
     {
         log = default;
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return false;
-        if (Environment.TickCount64 - _pmLogiGpuTime >= PMLogCacheMs)
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return false;
+        if (Net48Compat.TickCount64 - _pmLogiGpuTime >= PMLogCacheMs)
         {
             _pmLogiGpuValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out _pmLogiGpu) == Adl2.ADL_SUCCESS;
-            _pmLogiGpuTime = Environment.TickCount64;
+            _pmLogiGpuTime = Net48Compat.TickCount64;
         }
         log = _pmLogiGpu;
         return _pmLogiGpuValid;
@@ -233,7 +233,7 @@ public class AmdGpuControl : IGpuControl
     {
         _oldGpu ??= ADL2_Overdrive_Caps(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _, out _, out int v) == Adl2.ADL_SUCCESS && v < 8;
         if (_oldGpu == false) return default;
-        if (Environment.TickCount64 - _legacyTick < PMLogCacheMs) return _legacy;
+        if (Net48Compat.TickCount64 - _legacyTick < PMLogCacheMs) return _legacy;
 
         int idx = _internalDiscreteAdapter.AdapterIndex;
         (int? temp, int? use, float? power) data = default;
@@ -255,14 +255,14 @@ public class AmdGpuControl : IGpuControl
         }
         catch (EntryPointNotFoundException) { _oldGpu = false; }
 
-        _legacyTick = Environment.TickCount64;
+        _legacyTick = Net48Compat.TickCount64;
         return _legacy = data;
     }
 
     // Used by ROG Ally (iGPU-only) for auto-TDP logic - queries the integrated GPU adapter
     public int GetiGpuPower()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return 0;
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return 0;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_ASIC_POWER];
@@ -274,7 +274,7 @@ public class AmdGpuControl : IGpuControl
 
     public bool SetVariBright(int enabled)
     {
-        if (_adlContextHandle == nint.Zero) return false;
+        if (_adlContextHandle == IntPtr.Zero) return false;
 
         ADLAdapterInfo? iGPU = FindByType(ADLAsicFamilyType.Integrated);
         if (iGPU is null) return false;
@@ -287,7 +287,7 @@ public class AmdGpuControl : IGpuControl
     {
         supported = enabled = -1;
 
-        if (_adlContextHandle == nint.Zero) return false;
+        if (_adlContextHandle == IntPtr.Zero) return false;
 
         ADLAdapterInfo? iGPU = FindByType(ADLAsicFamilyType.Integrated);
         if (iGPU is null) return false;
@@ -303,19 +303,19 @@ public class AmdGpuControl : IGpuControl
 
     public void StartFPS()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return;
         ADL2_Adapter_FrameMetrics_Start(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
     }
 
     public void StopFPS()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return;
         ADL2_Adapter_FrameMetrics_Stop(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
     }
 
     public float GetFPS()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return 0;
         float fps;
         if (ADL2_Adapter_FrameMetrics_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0, out fps) != Adl2.ADL_SUCCESS) return 0;
         return fps;
@@ -323,7 +323,7 @@ public class AmdGpuControl : IGpuControl
 
     public int GetFPSLimit()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return -1;
         ADLFPSSettingsOutput settings;
         if (ADL2_FPS_Settings_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out settings) != Adl2.ADL_SUCCESS) return -1;
 
@@ -334,7 +334,7 @@ public class AmdGpuControl : IGpuControl
 
     public int SetFPSLimit(int limit)
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+        if (_adlContextHandle == IntPtr.Zero || _iGPU == null) return -1;
 
         ADLFPSSettingsInput settings = new ADLFPSSettingsInput();
 
@@ -362,7 +362,7 @@ public class AmdGpuControl : IGpuControl
 
         if (!IsValid) return;
 
-        nint appInfoPtr = nint.Zero;
+        nint appInfoPtr = IntPtr.Zero;
         int appCount = 0;
 
         try
@@ -381,7 +381,7 @@ public class AmdGpuControl : IGpuControl
             for (int i = 0; i < appCount; i++)
             {
                 appInfoArray[i] = Marshal.PtrToStructure<ADLSGApplicationInfo>(currentPtr);
-                currentPtr = nint.Add(currentPtr, Marshal.SizeOf<ADLSGApplicationInfo>());
+                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<ADLSGApplicationInfo>());
             }
 
             var appNames = new List<string>();
@@ -410,7 +410,7 @@ public class AmdGpuControl : IGpuControl
         finally
         {
             // Clean up resources
-            if (appInfoPtr != nint.Zero)
+            if (appInfoPtr != IntPtr.Zero)
             {
                 Marshal.FreeCoTaskMem(appInfoPtr);
             }
@@ -421,10 +421,10 @@ public class AmdGpuControl : IGpuControl
 
     private void ReleaseUnmanagedResources()
     {
-        if (_adlContextHandle != nint.Zero)
+        if (_adlContextHandle != IntPtr.Zero)
         {
             ADL2_Main_Control_Destroy(_adlContextHandle);
-            _adlContextHandle = nint.Zero;
+            _adlContextHandle = IntPtr.Zero;
             _isReady = false;
         }
     }
