@@ -622,11 +622,10 @@ namespace GHelper
                 int gpu_power = AppConfig.GetMode("gpu_power");
                 if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
 
-                Invoke(delegate
-                {
+                Invoke((Action)(() => {
                     trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
                     VisualiseGPUSettings();
-                });
+                }));
             });
         }
 
@@ -636,7 +635,7 @@ namespace GHelper
             {
                 if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
                 {
-                    Invoke(delegate { gpuVisible = buttonGPU.Visible = false; });
+                    Invoke((Action)(() => { gpuVisible = buttonGPU.Visible = false; });
                     return;
                 }
 
@@ -706,14 +705,14 @@ namespace GHelper
                         VisualiseGPUSettings();
 
                         InitGPUPower();
-                    });
+                    }));
                 }
                 catch (Exception ex)
                 {
                     Logger.WriteLine(ex.ToString());
-                    try { Invoke(delegate { gpuVisible = buttonGPU.Visible = false; }); } catch { }
+                    try { Invoke((Action)(() => { gpuVisible = buttonGPU.Visible = false; }); } catch { }
                 }
-            });
+            }));
         }
 
         private void VisualiseGPUSettings()
@@ -995,13 +994,12 @@ namespace GHelper
         {
             if (this == null || this.Text == "") return;
 
-            Invoke(delegate
-            {
+            Invoke((Action)(() => {
                 buttonCalibrate.Enabled = true;
                 SetAxis(chartCPU, AsusFan.CPU);
                 SetAxis(chartGPU, AsusFan.GPU);
                 if (chartMid.Visible) SetAxis(chartMid, AsusFan.Mid);
-            });
+            }));
         }
 
         public void LabelFansResult(string text)
@@ -1011,11 +1009,10 @@ namespace GHelper
             if (this.IsDisposed || !this.IsHandleCreated || this.Text == "") return;
 
             try { 
-                BeginInvoke(delegate
-                {
+                BeginInvoke((Action)(() => {
                     labelFansResult.Text = text;
                     labelFansResult.Visible = (text.Length > 0);
-                });
+                }));
             }
             catch (ObjectDisposedException) { }
         }
