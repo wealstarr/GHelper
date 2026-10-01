@@ -19,7 +19,7 @@ namespace GHelper.USB
                 /*
                 var devices = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device =>
                     deviceIds.Contains(device.ProductID) &&
-                    device.CanOpen &&
+                    device.TryOpen(out _ ) &&
                     device.GetMaxFeatureReportLength() >= 300);
 
                 foreach (var device in devices)
