@@ -644,7 +644,7 @@ namespace GHelper
 
                 if (HardwareControl.GpuControl is not NvidiaGpuControl nv)
                 {
-                    Invoke(delegate { gpuVisible = buttonGPU.Visible = false; });
+                    Invoke((Action)(() => { gpuVisible = buttonGPU.Visible = false; }));
                     return;
                 }
 
@@ -711,7 +711,7 @@ namespace GHelper
                 catch (Exception ex)
                 {
                     Logger.WriteLine(ex.ToString());
-                    try { Invoke(delegate { gpuVisible = buttonGPU.Visible = false; }); } catch { }
+                    try { Invoke((Action)(() => { gpuVisible = buttonGPU.Visible = false; })); } catch { }
                 }
             });
         }
