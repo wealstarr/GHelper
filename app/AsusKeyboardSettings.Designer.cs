@@ -668,7 +668,6 @@ namespace GHelper
             Controls.Add(panelOled);
             Margin = new Padding(4);
             MaximizeBox = false;
-            MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             Name = "AsusKeyboardSettings";
             ShowIcon = false;
