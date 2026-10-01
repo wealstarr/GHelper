@@ -45,6 +45,7 @@
     <PackageReference Include="NAudio.Wasapi" Version="2.3.0" />
     <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />
     <PackageReference Include="System.Management" Version="10.0.10" />
+    <PackageReference Include="IndexRange" Version="1.1.1" />
     <PackageReference Include="System.Threading.AccessControl" Version="10.0.12" />
     <PackageReference Include="Microsoft.Bcl.Numerics" Version="10.0.12" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
