@@ -751,7 +751,7 @@ namespace GHelper.Peripherals.Keyboard
         public Color[] StoredKeyColors()
         {
             Color[] colors = new Color[LedCount()];
-            Array.Fill(colors, StoredColor);
+            Net48Compat.Fill(colors, StoredColor);
 
             string? stored = AppConfig.GetString(ConfigKey("key_colors"));
             if (stored is null) return colors;
