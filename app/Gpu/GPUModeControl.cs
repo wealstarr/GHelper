@@ -188,11 +188,10 @@ namespace GHelper.Gpu
                     status = Program.acpi.SetGPUEco(eco);
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
-                    settings.Invoke(delegate
-                    {
+                    settings.Invoke((Action)(() => {
                         InitGPUMode();
                         ScreenControl.AutoScreen();
-                    });
+                    }));
 
                     if (eco == 0)
                     {
@@ -203,7 +202,7 @@ namespace GHelper.Gpu
                             if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
                             else NvidiaGpuControl.RestartNvContainer();
                             nvRestartPending = false;
-                            settings.Invoke(delegate { InitGPUMode(); });
+                            settings.Invoke((Action)(() => { InitGPUMode(); });
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
@@ -227,7 +226,7 @@ namespace GHelper.Gpu
                     Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
                 }
 
-            });
+            }));
 
 
         }
@@ -345,10 +344,9 @@ namespace GHelper.Gpu
 
                 }
 
-                settings.Invoke(delegate
-                {
+                settings.Invoke((Action)(() => {
                     InitGPUMode();
-                });
+                }));
             });
         }
 
