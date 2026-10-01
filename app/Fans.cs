@@ -758,8 +758,8 @@ namespace GHelper
             if (up < 0) up = defaults.up > 0 ? defaults.up : 3;
             if (down < 0) down = defaults.down > 0 ? defaults.down : 3;
 
-            trackHysteresisUp.Value = Math.Clamp(up, trackHysteresisUp.Minimum, trackHysteresisUp.Maximum);
-            trackHysteresisDown.Value = Math.Clamp(down, trackHysteresisDown.Minimum, trackHysteresisDown.Maximum);
+            trackHysteresisUp.Value = Compat.Clamp(up, trackHysteresisUp.Minimum, trackHysteresisUp.Maximum);
+            trackHysteresisDown.Value = Compat.Clamp(down, trackHysteresisDown.Minimum, trackHysteresisDown.Maximum);
             VisualiseHysteresis();
         }
 
@@ -1094,9 +1094,9 @@ namespace GHelper
             int limit_gpucpu = AppConfig.GetMode("limit_gpucpu", AsusACPI.MaxGPUtoCPU);
             int limit_cputemp = AppConfig.GetMode("limit_cputemp", AsusACPI.MaxCPUTemp);
 
-            limit_crossload = Math.Clamp(limit_crossload, AsusACPI.MinCrossLoad, AsusACPI.MaxCrossLoad);
-            limit_gpucpu = Math.Clamp(limit_gpucpu, AsusACPI.MinGPUtoCPU, AsusACPI.MaxGPUtoCPU);
-            limit_cputemp = Math.Clamp(limit_cputemp, AsusACPI.MinCPUTemp, AsusACPI.MaxCPUTemp);
+            limit_crossload = Compat.Clamp(limit_crossload, AsusACPI.MinCrossLoad, AsusACPI.MaxCrossLoad);
+            limit_gpucpu = Compat.Clamp(limit_gpucpu, AsusACPI.MinGPUtoCPU, AsusACPI.MaxGPUtoCPU);
+            limit_cputemp = Compat.Clamp(limit_cputemp, AsusACPI.MinCPUTemp, AsusACPI.MaxCPUTemp);
 
             trackTotal.Value = limit_total;
             trackSlow.Value = limit_slow;
