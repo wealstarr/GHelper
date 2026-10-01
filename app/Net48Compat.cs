@@ -11,6 +11,9 @@ namespace GHelper
         public static long TickCount64 => unchecked((uint)Environment.TickCount);
         public static int ProcessId => System.Diagnostics.Process.GetCurrentProcess().Id;
         public static void Fill<T>(T[] array, T value) { for (int i = 0; i < array.Length; i++) array[i] = value; }
+        public static T[] Slice<T>(T[] array, int start, int end) { var result = new T[end - start]; Array.Copy(array, start, result, 0, result.Length); return result; }
+        public static object Invoke(this System.Windows.Forms.Control control, Action action) { return control.Invoke((Delegate)action); }
+        public static IAsyncResult BeginInvoke(this System.Windows.Forms.Control control, Action action) { return control.BeginInvoke((Delegate)action); }
     }
 
     internal static class TaskCompatExtensions
