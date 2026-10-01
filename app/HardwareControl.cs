@@ -734,7 +734,7 @@ public static class HardwareControl
         _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
 
         if (deltaTotal <= 0) return 0;
-        return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
+        return Compat.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -893,7 +893,7 @@ public static class HardwareControl
                 if (vram is { } v && v.totalMb > 0)
                 {
                     vramUsedMb = (int)v.usedMb;
-                    vramUsage = (int)Math.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
+                    vramUsage = (int)Compat.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
                 }
                 else { vramUsedMb = null; vramUsage = null; }
             }
