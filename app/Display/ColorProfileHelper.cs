@@ -1,3 +1,4 @@
+using System.Net.Http;
 ﻿using GHelper.Helpers;
 using System.IO.Compression;
 
@@ -692,7 +693,7 @@ namespace GHelper.Display
                     string tempZipPath = Path.Combine(extractPath, "temp.zip");
                     File.WriteAllBytes(tempZipPath, zipData);
 
-                    ZipFile.ExtractToDirectory(tempZipPath, extractPath, true);
+                    ZipFile.ExtractToDirectory(tempZipPath, extractPath);
 
                     File.Delete(tempZipPath);
                 }
