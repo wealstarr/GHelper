@@ -37,7 +37,7 @@ namespace GHelper.Helpers
         private static int GetBadge(int startCount, int click)
         {
             if (startCount < ((click < 20) ? 20 : click + 50)) return 0;
-            return Math.Clamp((startCount - click) / 50, 1, 5);
+            return Compat.Clamp((startCount - click) / 50, 1, 5);
         }
 
         private void Settings_VisibleChanged(object? sender, EventArgs e)
