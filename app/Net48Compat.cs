@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,7 +9,15 @@ namespace GHelper
 {
     internal static class Net48Compat
     {
-        public static long TickCount64 => unchecked((uint)Environment.TickCount);
+        private static readonly long TickStart = Stopwatch.GetTimestamp();
+        public static long TickCount64
+        {
+            get
+            {
+                long elapsed = Stopwatch.GetTimestamp() - TickStart;
+                return (long)(elapsed * 1000.0 / Stopwatch.Frequency);
+            }
+        }
         public static int ProcessId => System.Diagnostics.Process.GetCurrentProcess().Id;
         public static void Fill<T>(T[] array, T value) { for (int i = 0; i < array.Length; i++) array[i] = value; }
         public static T[] Slice<T>(T[] array, int start, int end) { var result = new T[end - start]; Array.Copy(array, start, result, 0, result.Length); return result; }
