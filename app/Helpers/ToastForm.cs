@@ -127,8 +127,7 @@ namespace GHelper.Helpers
 
             if (AppConfig.Is("disable_osd")) return;
 
-            Program.settingsForm.Invoke(delegate
-            {
+            Program.settingsForm.Invoke((Action)(() => {
                 //Hide();
                 timer.Stop();
 
@@ -156,7 +155,7 @@ namespace GHelper.Helpers
                     System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
                     text);
 
-            });
+            }));
 
         }
 
