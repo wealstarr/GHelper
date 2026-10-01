@@ -244,10 +244,9 @@ namespace GHelper
             }
             if (!mouse.IsDeviceReady)
             {
-                this.Invoke(delegate
-                {
+                this.Invoke((Action)(() => {
                     Close();
-                });
+                }));
             }
         }
 
@@ -257,10 +256,9 @@ namespace GHelper
             {
                 return;
             }
-            this.Invoke(delegate
-            {
+            this.Invoke((Action)(() => {
                 VisualizeBatteryState();
-            });
+            }));
 
         }
 
@@ -622,10 +620,9 @@ namespace GHelper
                 return;
             }
             //Mouse disconnected. Bye bye.
-            this.Invoke(delegate
-            {
+            this.Invoke((Action)(() => {
                 this.Close();
-            });
+            }));
 
         }
 
