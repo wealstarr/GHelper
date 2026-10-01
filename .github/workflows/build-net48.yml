@@ -1,0 +1,19 @@
+name: .NET Framework 4.8 Migration Build
+
+on:
+  push:
+    branches: [ net48-migration ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-net48:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v7
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
+    - name: Restore and build
+      run: msbuild app/GHelper.sln /restore /p:Configuration=Release /p:Platform=x64 /v:minimal
