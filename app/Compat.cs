@@ -20,4 +20,9 @@ internal static class Compat
         return value < min ? min : value > max ? max : value;
     }
 
+    public static decimal Clamp(decimal value, decimal min, decimal max)
+    {
+        if (min > max) throw new ArgumentException("min must be <= max");
+        return value < min ? min : value > max ? max : value;
+    }
 }
