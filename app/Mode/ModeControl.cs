@@ -542,7 +542,7 @@ namespace GHelper.Mode
                 if (CpuInfo.IsSupportedUV() && cpuUVCores is not null)
                 {
                     int core = 0;
-                    foreach (var token in cpuUVCores.Split('-', StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var token in cpuUVCores.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries))
                     {
                         if (int.TryParse(token, out int uv) && -uv >= CpuInfo.MinCPUUV && -uv <= CpuInfo.MaxCPUUV)
                         {
