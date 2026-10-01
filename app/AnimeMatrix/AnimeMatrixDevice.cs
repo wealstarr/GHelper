@@ -212,7 +212,7 @@ namespace GHelper.AnimeMatrix
                         Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
                             .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
                             .AppendData(BitConverter.GetBytes((ushort)(end - start)))
-                            .AppendData(_displayBuffer[start..end])
+                            .AppendData(Net48Compat.Slice(_displayBuffer, start, end))
                         );
 
                         page++;
