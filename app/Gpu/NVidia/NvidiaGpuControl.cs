@@ -134,7 +134,7 @@ public class NvidiaGpuControl : IGpuControl
 
         if (delta < deltaMin) return false;
 
-        var t = Math.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
+        var t = Compat.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
         var interval = (int)(maxInterval - t * (maxInterval - minInterval));
 
         var refresh = Environment.TickCount > _lastTempTime + interval;
