@@ -893,7 +893,7 @@ public static class HardwareControl
                 if (vram is { } v && v.totalMb > 0)
                 {
                     vramUsedMb = (int)v.usedMb;
-                    vramUsage = (int)Compat.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
+                    vramUsage = (int)Compat.Clamp(v.usedMb * 100 / v.totalMb, 0m, 100m);
                 }
                 else { vramUsedMb = null; vramUsage = null; }
             }
