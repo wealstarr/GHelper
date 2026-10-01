@@ -19,5 +19,12 @@ jobs:
       uses: microsoft/setup-msbuild@v3
     - name: Restore and build
       run: msbuild app/GHelper.sln /restore /p:Configuration=Release /p:Platform=x64 /v:minimal
-    - name: Publish smoke test
+    - name: Publish
       run: msbuild app/GHelper.sln /t:Publish /p:Configuration=Release /p:Platform=x64 /v:minimal
+    - name: Upload published GHelper
+      uses: actions/upload-artifact@v4
+      with:
+        name: GHelper-net48-x64
+        path: app/bin/x64/Release/publish/
+        if-no-files-found: error
+        retention-days: 14
