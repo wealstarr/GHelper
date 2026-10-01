@@ -67,7 +67,7 @@
         // firmware rounds up to the nearest 25
         public bool SetOledBrightness(int brightness)
         {
-            brightness = Math.Clamp(brightness, 0, 100);
+            brightness = Compat.Clamp(brightness, 0, 100);
             byte[]? response = WriteForResponse(new byte[] { reportId, 0x68, 0x00, 0x00, 0x00, (byte)brightness });
             if (response is null) return false;
 
