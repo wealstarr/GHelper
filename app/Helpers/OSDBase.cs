@@ -37,7 +37,7 @@ namespace GHelper.Helpers
                     BLENDFUNCTION blendfunction1;
                     rectangle1 = new Rectangle(0, 0, Size.Width, Size.Height);
                     PerformPaint(new PaintEventArgs(graphics1, rectangle1));
-                    nint ptr1 = User32.GetDC(nint.Zero);
+                    nint ptr1 = User32.GetDC(IntPtr.Zero);
                     nint ptr2 = Gdi32.CreateCompatibleDC(ptr1);
                     nint ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
                     nint ptr4 = Gdi32.SelectObject(ptr2, ptr3);
@@ -55,7 +55,7 @@ namespace GHelper.Helpers
                     blendfunction1.AlphaFormat = 1;
                     User32.UpdateLayeredWindow(Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
                     Gdi32.SelectObject(ptr2, ptr4);
-                    User32.ReleaseDC(nint.Zero, ptr1);
+                    User32.ReleaseDC(IntPtr.Zero, ptr1);
                     Gdi32.DeleteObject(ptr3);
                     Gdi32.DeleteDC(ptr2);
                 }
@@ -68,7 +68,7 @@ namespace GHelper.Helpers
 
         public virtual void Show()
         {
-            if (Handle == nint.Zero) //if handle don't equal to zero - window was created and just hided
+            if (Handle == IntPtr.Zero) //if handle don't equal to zero - window was created and just hided
                 CreateWindowOnly();
             User32.ShowWindow(Handle, User32.SW_SHOWNOACTIVATE);
         }
@@ -76,7 +76,7 @@ namespace GHelper.Helpers
 
         public virtual void Hide()
         {
-            if (Handle == nint.Zero)
+            if (Handle == IntPtr.Zero)
                 return;
             User32.ShowWindow(Handle, User32.SW_HIDE);
             DestroyHandle();
@@ -112,7 +112,7 @@ namespace GHelper.Helpers
             params1.Y = nY;
             params1.Height = size1.Height;
             params1.Width = size1.Width;
-            params1.Parent = nint.Zero;
+            params1.Parent = IntPtr.Zero;
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
             params1.ExStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
@@ -126,7 +126,7 @@ namespace GHelper.Helpers
         {
             if (X != x || Y != y || Width != width || Height != height)
             {
-                if (Handle != nint.Zero)
+                if (Handle != IntPtr.Zero)
                 {
                     int num1 = 20;
                     if (X == x && Y == y)
@@ -137,7 +137,7 @@ namespace GHelper.Helpers
                     {
                         num1 |= 1;
                     }
-                    User32.SetWindowPos(Handle, nint.Zero, x, y, width, height, (uint)num1);
+                    User32.SetWindowPos(Handle, IntPtr.Zero, x, y, width, height, (uint)num1);
                 }
                 else
                 {
@@ -159,7 +159,7 @@ namespace GHelper.Helpers
             get { return _location; }
             set
             {
-                if (Handle != nint.Zero)
+                if (Handle != IntPtr.Zero)
                 {
                     SetBoundsCore(value.X, value.Y, _size.Width, _size.Height);
                     RECT rect = new RECT();
@@ -181,7 +181,7 @@ namespace GHelper.Helpers
             get { return _size; }
             set
             {
-                if (Handle != nint.Zero)
+                if (Handle != IntPtr.Zero)
                 {
                     SetBoundsCore(_location.X, _location.Y, value.Width, value.Height);
                     RECT rect = new RECT();
