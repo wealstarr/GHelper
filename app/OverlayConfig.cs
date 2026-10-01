@@ -52,11 +52,11 @@ namespace GHelper
             checkEnable.Checked = AppConfig.IsOverlay();
             checkGameOnly.Checked = AppConfig.IsOverlayGameOnly();
 
-            mode = Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, modeButtons.Length - 1);
+            mode = Compat.Clamp(AppConfig.Get("overlay_mode", 0), 0, modeButtons.Length - 1);
             VisualiseBlocks();
 
-            trackScale.Value = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), trackScale.Minimum, trackScale.Maximum);
-            trackAlpha.Value = Math.Clamp(AppConfig.Get("overlay_alpha", 128), trackAlpha.Minimum, trackAlpha.Maximum);
+            trackScale.Value = Compat.Clamp(AppConfig.Get("overlay_scale_percent", 100), trackScale.Minimum, trackScale.Maximum);
+            trackAlpha.Value = Compat.Clamp(AppConfig.Get("overlay_alpha", 128), trackAlpha.Minimum, trackAlpha.Maximum);
             labelSize.Text = trackScale.Value + "%";
             labelAlpha.Text = AlphaText();
 
