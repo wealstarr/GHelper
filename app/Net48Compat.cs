@@ -18,6 +18,8 @@ namespace System.Collections.Generic
 {
     internal static class DictionaryCompatExtensions
     {
+        public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> pair, out TKey key, out TValue value) { key = pair.Key; value = pair.Value; }
+
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
             return dictionary.TryGetValue(key, out var value) ? value : default(TValue);
