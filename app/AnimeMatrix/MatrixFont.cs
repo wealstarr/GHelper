@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Diagnostics;
 using System.Drawing.Text;
 using System.IO.Compression;
@@ -61,7 +62,7 @@ namespace GHelper.AnimeMatrix
 
                 // administrative install just unpacks the font, without registering it in the system
                 using (var process = Process.Start(new ProcessStartInfo("msiexec", $"/a \"{msi}\" /qn TARGETDIR=\"{temp}\"") { CreateNoWindow = true }))
-                    if (process is not null) await process.WaitForExitAsync();
+                    if (process is not null) await processTask.Run(() => process.WaitForExit());
 
                 Directory.CreateDirectory(Path.GetDirectoryName(fontFile)!);
                 File.Copy(Directory.GetFiles(temp, "*.otf", SearchOption.AllDirectories)[0], fontFile, true);
