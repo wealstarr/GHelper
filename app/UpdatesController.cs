@@ -1,3 +1,4 @@
+using System.Net.Http;
 using GHelper.Helpers;
 using Microsoft.Win32;
 using System.Management;
