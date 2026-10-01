@@ -786,10 +786,9 @@ namespace GHelper
                 {
                     AsusService.StopAsusServices();
                     Program.inputDispatcher.Init();
-                    BeginInvoke(delegate
-                    {
+                    BeginInvoke((Action)(() => {
                         InitServices();
-                    });
+                    }));
                 });
             }
             else
@@ -798,10 +797,9 @@ namespace GHelper
                 Task.Run(() =>
                 {
                     AsusService.StartAsusServices();
-                    BeginInvoke(delegate
-                    {
+                    BeginInvoke((Action)(() => {
                         InitServices();
-                    });
+                    }));
                 });
             }
         }
