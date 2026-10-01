@@ -5,7 +5,7 @@ using System.Management;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.Json;
+using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 
 namespace GHelper
@@ -62,46 +62,57 @@ namespace GHelper
         {
             Logger.WriteLine(url);
             var json = await GetStringAsync(url, token);
-            var data = JsonSerializer.Deserialize<JsonElement>(json);
-            var result = data.GetProperty("Result");
+            var serializer = new JavaScriptSerializer();
+            var data = DeserializeObject(serializer, json);
+            var result = GetObject(data, "Result");
 
             // fallback for bugged API
-            if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
+            var groups = GetArray(result, "Obj");
+            if (groups.Count == 0)
             {
                 var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                 Logger.WriteLine(urlFallback);
                 json = await GetStringAsync(urlFallback, token);
-                data = JsonSerializer.Deserialize<JsonElement>(json);
+                data = DeserializeObject(serializer, json);
+                result = GetObject(data, "Result");
+                groups = GetArray(result, "Obj");
             }
 
-            var groups = data.GetProperty("Result").GetProperty("Obj");
             var updates = new List<DriverUpdate>();
 
-            for (int i = 0; i < groups.GetArrayLength(); i++)
+            for (int i = 0; i < groups.Count; i++)
             {
                 token.ThrowIfCancellationRequested();
 
-                var categoryName = groups[i].GetProperty("Name").ToString();
-                var files = groups[i].GetProperty("Files");
+                var group = groups[i] as Dictionary<string, object>;
+                if (group is null) continue;
+
+                var categoryName = GetString(group, "Name");
+                var files = GetArray(group, "Files");
                 var oldTitle = "";
 
-                for (int j = 0; j < files.GetArrayLength(); j++)
+                for (int j = 0; j < files.Count; j++)
                 {
-                    var file = files[j];
-                    var title = file.GetProperty("Title").ToString();
-                    var version = file.GetProperty("Version").ToString().Replace("V", "");
+                    token.ThrowIfCancellationRequested();
+
+                    var file = files[j] as Dictionary<string, object>;
+                    if (file is null) continue;
+
+                    var title = GetString(file, "Title");
+                    var version = GetString(file, "Version").Replace("V", "");
                     if (title.Contains("Realtek LAN")) title += " " + Major(version);
 
                     if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
+                        var download = GetObject(file, "DownloadUrl");
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
                             title = title,
                             version = version,
-                            downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString(),
-                            date = file.GetProperty("ReleaseDate").ToString(),
-                            hardwares = ParseHardwares(file.GetProperty("HardwareInfoList")),
+                            downloadUrl = GetString(download, "Global"),
+                            date = GetString(file, "ReleaseDate"),
+                            hardwares = ParseHardwares(GetValue(file, "HardwareInfoList")),
                             tip = version,
                             status = STATUS_NOT_FOUND,
                         });
@@ -200,12 +211,45 @@ namespace GHelper
             }
         }
 
-        static string[] ParseHardwares(JsonElement hardwares)
+        static Dictionary<string, object> DeserializeObject(JavaScriptSerializer serializer, string json)
         {
-            if (hardwares.ValueKind != JsonValueKind.Array) return Array.Empty<string>();
+            return serializer.DeserializeObject(json) as Dictionary<string, object> ?? new Dictionary<string, object>();
+        }
+
+        static object GetValue(Dictionary<string, object> obj, string key)
+        {
+            return obj.TryGetValue(key, out var value) ? value : null;
+        }
+
+        static string GetString(Dictionary<string, object> obj, string key)
+        {
+            return GetValue(obj, key)?.ToString() ?? "";
+        }
+
+        static Dictionary<string, object> GetObject(Dictionary<string, object> obj, string key)
+        {
+            return GetValue(obj, key) as Dictionary<string, object> ?? new Dictionary<string, object>();
+        }
+
+        static List<object> GetArray(Dictionary<string, object> obj, string key)
+        {
+            return GetArray(GetValue(obj, key));
+        }
+
+        static List<object> GetArray(object value)
+        {
+            if (value is object[] array) return array.ToList();
+            return new List<object>();
+        }
+
+        static string[] ParseHardwares(object hardwares)
+        {
             var list = new List<string>();
-            for (int k = 0; k < hardwares.GetArrayLength(); k++)
-                list.Add(CleanupDeviceId(hardwares[k].GetProperty("hardwareid").ToString()));
+            foreach (var item in GetArray(hardwares))
+            {
+                if (item is Dictionary<string, object> hardware)
+                    list.Add(CleanupDeviceId(GetString(hardware, "hardwareid")));
+            }
             return list.ToArray();
         }
 
