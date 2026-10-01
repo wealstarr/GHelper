@@ -104,13 +104,8 @@
 	</Target>
 
 	<Target Name="RemoveUnwantedSatelliteLanguages" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'=='true'">
-		<Exec Command="powershell -NoProfile -Command &quot;Get-ChildItem -LiteralPath '$(PublishDir)' -Directory | Where-Object { \$_.Name -ne 'en-US' -and \$_.Name -match '^[a-zA-Z]{2,3}(-[a-zA-Z]{2,8})* AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
-		<Exec Command="powershell -NoProfile -Command &quot;$exe = '$(PublishDir)GHelper.exe'; for ($i = 0; $i -lt 30; $i++) { try { [IO.File]::Open($exe, 'Open', 'Read', 'None').Close(); break } catch { Start-Sleep -Milliseconds 200 } }; Compress-Archive -Path $exe -DestinationPath '$(PublishDir)GHelper.zip' -Force&quot;" />
+		<Exec Command="powershell -NoProfile -Command &quot;Get-ChildItem -LiteralPath '$(PublishDir)' -Directory | Where-Object { \$_.Name -ne 'en-US' } | Remove-Item -Recurse -Force&quot;" />
 	</Target>
-</Project>
- } | Remove-Item -Recurse -Force&quot;" />
-	</Target>
-
 	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
 		<Exec Command="powershell -NoProfile -Command &quot;$exe = '$(PublishDir)GHelper.exe'; for ($i = 0; $i -lt 30; $i++) { try { [IO.File]::Open($exe, 'Open', 'Read', 'None').Close(); break } catch { Start-Sleep -Milliseconds 200 } }; Compress-Archive -Path $exe -DestinationPath '$(PublishDir)GHelper.zip' -Force&quot;" />
 	</Target>
