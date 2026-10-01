@@ -51,7 +51,7 @@ public static class AsusHid
                 try
                 {
                     if ((pids != null ? pids.Contains(device.ProductID) : ALL_PIDS.Contains(device.ProductID)) &&
-                        device.CanOpen &&
+                        device.TryOpen(out _ ) &&
                         device.GetMaxFeatureReportLength() > 0)
                     {
                         filteredDevices.Add(device);
