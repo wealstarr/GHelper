@@ -57,7 +57,7 @@ namespace GHelper.Display
             var modes = new DisplayNative.DISPLAYCONFIG_MODE_INFO[modeCount];
             err = DisplayNative.QueryDisplayConfig(
                 DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS,
-                ref pathCount, paths, ref modeCount, modes, nint.Zero);
+                ref pathCount, paths, ref modeCount, modes, IntPtr.Zero);
             if (err != 0) throw new Win32Exception(err);
 
             for (int i = 0; i < modeCount; i++)
@@ -96,7 +96,7 @@ namespace GHelper.Display
                 var modes = new DisplayNative.DISPLAYCONFIG_MODE_INFO[modeCount];
                 err = DisplayNative.QueryDisplayConfig(
                     DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS,
-                    ref pathCount, paths, ref modeCount, modes, nint.Zero);
+                    ref pathCount, paths, ref modeCount, modes, IntPtr.Zero);
                 if (err != 0) throw new Win32Exception(err);
 
                 foreach (var path in paths)
@@ -113,7 +113,7 @@ namespace GHelper.Display
                     if (log) Logger.WriteLine(targetName.monitorDevicePath + " " + targetName.outputTechnology);
                     AppConfig.Set("internal_display", targetName.monitorFriendlyDeviceName);
 
-                    // Resolve GDI device name directly from the source path entry — no EnumDisplayDevices needed
+                    // Resolve GDI device name directly from the source path entry â€” no EnumDisplayDevices needed
                     var sourceName = new DisplayNative.DISPLAYCONFIG_SOURCE_DEVICE_NAME();
                     sourceName.header.type = DisplayNative.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
                     sourceName.header.size = (uint)Marshal.SizeOf(sourceName);
