@@ -441,7 +441,7 @@ namespace GHelper
                 cr = CM_Get_DevNode_PropertyW(devInst, key, out _, buffer, ref size, 0);
             }
             if (cr != 0 || size == 0) return null;
-            return size == buffer.Length ? buffer : buffer[..(int)size];
+            return size == buffer.Length ? buffer : Net48Compat.Slice(buffer, 0, (int)size);
         }
 
         static string? PropString(byte[]? buffer) => buffer is null ? null : Encoding.Unicode.GetString(buffer).TrimEnd('\0');
