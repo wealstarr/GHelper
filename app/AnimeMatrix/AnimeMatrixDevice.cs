@@ -457,8 +457,8 @@ namespace GHelper.AnimeMatrix
             string[] fonts = AniMatrixControl.TextFonts;
             string prefix = TextPrefix(line);
 
-            float size = Math.Clamp(AppConfig.Get(prefix + "_size", 15), 8, 30);
-            string fontName = fonts[Math.Clamp(AppConfig.Get(prefix + "_font", 0), 0, fonts.Length - 1)];
+            float size = Compat.Clamp(AppConfig.Get(prefix + "_size", 15), 8, 30);
+            string fontName = fonts[Compat.Clamp(AppConfig.Get(prefix + "_font", 0), 0, fonts.Length - 1)];
 
             // line 1 stacks tightly on top of line 2
             float bottom = 0;
@@ -781,7 +781,7 @@ namespace GHelper.AnimeMatrix
                     int last = Math.Min(MaxRows - 1 - edge + slice, 2 * MaxColumns - 1 + edge - slice);
                     for (int x = Math.Abs(edge - slice); x <= last; x++)
                     {
-                        int i = Math.Clamp((edge + len - 1 - x) * count / len, 0, count - 1);
+                        int i = Compat.Clamp((edge + len - 1 - x) * count / len, 0, count - 1);
                         SetLedDiagonal(x, -slice, bands[i], 0, -edge);
                     }
                     break;
