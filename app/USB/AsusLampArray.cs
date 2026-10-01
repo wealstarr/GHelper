@@ -206,7 +206,7 @@ public static class AsusLampArray
 
     static Color Blend(Color[] zones, int off, double t)
     {
-        double f = Math.Clamp(t, 0, 1) * 3;
+        double f = Compat.Clamp(t, 0, 1) * 3;
         int a = (int)f;
         return ColorUtils.GetWeightedAverage(zones[off + a], zones[off + Math.Min(3, a + 1)], (float)(f - a));
     }
