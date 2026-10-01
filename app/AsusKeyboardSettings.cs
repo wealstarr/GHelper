@@ -141,7 +141,7 @@ namespace GHelper
                 comboBoxProfile.Items.Add("Default");
                 for (int i = 1; i < keyboard.ProfileCount(); i++)
                     comboBoxProfile.Items.Add(Properties.Strings.Profile + " " + i);
-                comboBoxProfile.SelectedIndex = Math.Clamp(keyboard.Profile, 0, comboBoxProfile.Items.Count - 1);
+                comboBoxProfile.SelectedIndex = Compat.Clamp(keyboard.Profile, 0, comboBoxProfile.Items.Count - 1);
                 comboBoxProfile.DropDownClosed += ComboBoxProfile_DropDownClosed;
             }
 
@@ -328,7 +328,7 @@ namespace GHelper
 
             sliderOledBrightness.Value = oled.OledBrightness < 0
                 ? sliderOledBrightness.Max
-                : Math.Clamp(oled.OledBrightness, sliderOledBrightness.Min, sliderOledBrightness.Max);
+                : Compat.Clamp(oled.OledBrightness, sliderOledBrightness.Min, sliderOledBrightness.Max);
 
             if (!oled.OledEnabled)
             {
@@ -460,7 +460,7 @@ namespace GHelper
 
             if (keyboard.HasLowBatteryWarning())
             {
-                sliderLowBatteryWarning.Value = Math.Clamp(keyboard.LowBatteryWarning, 0, sliderLowBatteryWarning.Max);
+                sliderLowBatteryWarning.Value = Compat.Clamp(keyboard.LowBatteryWarning, 0, sliderLowBatteryWarning.Max);
                 labelLowBatteryWarningValue.Text = keyboard.LowBatteryWarning == 0 ? Properties.Strings.Never : keyboard.LowBatteryWarning + "%";
             }
         }
@@ -838,8 +838,8 @@ namespace GHelper
 
             int modeIndex = supportedModes.IndexOf(keyboard.StoredMode);
             comboBoxLightingMode.SelectedIndex = modeIndex >= 0 ? modeIndex : 0;
-            comboBoxAnimationSpeed.SelectedIndex = Math.Clamp((int)keyboard.StoredSpeed, 0, comboBoxAnimationSpeed.Items.Count - 1);
-            sliderBrightness.Value = Math.Clamp(keyboard.StoredBrightness, sliderBrightness.Min, sliderBrightness.Max);
+            comboBoxAnimationSpeed.SelectedIndex = Compat.Clamp((int)keyboard.StoredSpeed, 0, comboBoxAnimationSpeed.Items.Count - 1);
+            sliderBrightness.Value = Compat.Clamp(keyboard.StoredBrightness, sliderBrightness.Min, sliderBrightness.Max);
             buttonLightingColor.SwatchColor = keyboard.StoredColor;
             buttonLightingColor2.SwatchColor = keyboard.StoredColor2;
             buttonLightingColor3.SwatchColor = keyboard.StoredColor3;
