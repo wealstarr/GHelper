@@ -660,7 +660,7 @@ namespace GHelper
         {
             if (checkBoxSyncAura.Checked || SelectedMode() != KeyboardLightingMode.Direct) return;
 
-            Array.Fill(keyColors, paintColor);
+            Net48Compat.Fill(keyColors, paintColor);
             settingsChanged = true;
             RefreshKeyGrid();
             Task.Run(() => { try { keyboard.SetLedColors(keyColors); } catch { } });
