@@ -43,7 +43,7 @@ namespace GHelper
 
         static HttpClient CreateHttpClient()
         {
-            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.All });
+            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
             client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
             client.DefaultRequestHeaders.Add("User-Agent", "C# App");
             return client;
