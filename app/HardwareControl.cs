@@ -717,7 +717,7 @@ public static class HardwareControl
     {
         if (!GetSystemTimes(out long idle, out long kernel, out long user)) return null;
 
-        long now = Environment.TickCount64;
+        long now = Net48Compat.TickCount64;
 
         // First read, or resumed after a long pause (mode switch, overlay restart) —
         // capture baseline and skip this tick so the next delta covers a clean ~1 s window.
