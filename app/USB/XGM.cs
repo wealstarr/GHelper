@@ -30,7 +30,7 @@ namespace GHelper.USB
                 */
                 return DeviceList.Local.GetHidDevices(ASUS_ID).FirstOrDefault(device =>
                     deviceIds.Contains(device.ProductID) &&
-                    device.CanOpen &&
+                    device.TryOpen(out _) &&
                     device.GetMaxFeatureReportLength() >= 300);
             }
             catch (Exception ex)
