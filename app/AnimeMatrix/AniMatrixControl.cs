@@ -445,7 +445,7 @@ namespace GHelper.AnimeMatrix
 
                             byte[] slice = new byte[size];
                             for (int i = 0; i < size; i++) slice[i] = (byte)Math.Min(255, Math.Pow(spectroLevels[i] / maxAverage, 2) * 255);
-                            Array.Clear(spectroLevels);
+                            Array.Clear(spectroLevels, 0, spectroLevels.Length);
 
                             spectroSlices.Insert(0, slice);
                             int depth = deviceMatrix.MaxColumns + deviceMatrix.FullRows / 2;
@@ -564,7 +564,7 @@ namespace GHelper.AnimeMatrix
         }
 
         public static int PictureFrameDelay(Image image)
-            => Math.Max(AppConfig.Get("matrix_speed", 50), BitConverter.ToInt32(image.GetPropertyItem(0x5100).Value) * 10);
+            => Math.Max(AppConfig.Get("matrix_speed", 50), BitConverter.ToInt32(image.GetPropertyItem(0x5100).Value, 0) * 10);
 
         protected void ProcessPicture(Image image)
         {
