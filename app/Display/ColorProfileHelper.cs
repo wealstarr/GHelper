@@ -690,7 +690,7 @@ namespace GHelper.Display
                     Directory.CreateDirectory(extractPath);
 
                     string tempZipPath = Path.Combine(extractPath, "temp.zip");
-                    await File.WriteAllBytesAsync(tempZipPath, zipData);
+                    File.WriteAllBytes(tempZipPath, zipData);
 
                     ZipFile.ExtractToDirectory(tempZipPath, extractPath, true);
 
