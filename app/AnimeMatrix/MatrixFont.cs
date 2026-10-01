@@ -57,8 +57,10 @@ namespace GHelper.AnimeMatrix
                     File.WriteAllBytes(zip, await client.GetByteArrayAsync(PackageUrl));
                 }
 
-                ZipFile.ExtractToDirectory(zip, temp);
-                string msi = Directory.GetFiles(temp, "*.msi", SearchOption.AllDirectories)[0];
+                string extract = Path.Combine(temp, "extract-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(extract);
+                ZipFile.ExtractToDirectory(zip, extract);
+                string msi = Directory.GetFiles(extract, "*.msi", SearchOption.AllDirectories)[0];
 
                 // administrative install just unpacks the font, without registering it in the system
                 using (var process = Process.Start(new ProcessStartInfo("msiexec", $"/a \"{msi}\" /qn TARGETDIR=\"{temp}\"") { CreateNoWindow = true }))
@@ -66,6 +68,7 @@ namespace GHelper.AnimeMatrix
 
                 Directory.CreateDirectory(Path.GetDirectoryName(fontFile)!);
                 File.Copy(Directory.GetFiles(temp, "*.otf", SearchOption.AllDirectories)[0], fontFile, true);
+                try { Directory.Delete(extract, true); } catch { }
 
                 family = LoadFile();
                 Logger.WriteLine("Matrix font: " + family?.Name);
