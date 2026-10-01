@@ -51,7 +51,7 @@ public static class AsusHid
                 try
                 {
                     if ((pids != null ? pids.Contains(device.ProductID) : ALL_PIDS.Contains(device.ProductID)) &&
-                        device.CanOpen &&
+                        Net48Compat.CanOpen(device) &&
                         device.GetMaxFeatureReportLength() > 0)
                     {
                         filteredDevices.Add(device);
@@ -216,7 +216,7 @@ public static class AsusHid
     {
         try
         {
-            var devices = DeviceList.Local.GetHidDevices(ASUS_ID) .Where(d => d.CanOpen).ToList();
+            var devices = DeviceList.Local.GetHidDevices(ASUS_ID) .Where(d => Net48Compat.CanOpen(d)).ToList();
             Logger.WriteLine($"HID Scan: {devices.Count} openable ASUS device(s) (VID 0x{ASUS_ID:X4})");
 
             foreach (var device in devices)
