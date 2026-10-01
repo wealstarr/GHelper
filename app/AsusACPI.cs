@@ -277,7 +277,7 @@ public class AsusACPI
         {
             WaitForSingleObject(eventHandle, Timeout.Infinite);
             Control(0x222408, new byte[0], outBuffer);
-            int code = BitConverter.ToInt32(outBuffer);
+            int code = BitConverter.ToInt32(outBuffer, 0);
             Logger.WriteLine("ACPI Code: " + code);
         }
     }
