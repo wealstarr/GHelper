@@ -275,8 +275,7 @@ namespace GHelper.Display
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
-            Program.settingsForm.Invoke(delegate
-            {
+            Program.settingsForm.Invoke((Action)(() => {
                 Program.settingsForm.VisualiseScreen(
                     screenEnabled: screenEnabled,
                     screenAuto: screenAuto,
@@ -291,7 +290,7 @@ namespace GHelper.Display
                     fhd: fhd,
                     hdrControl: hdrControl
                 );
-            });
+            }));
 
         }
     }
