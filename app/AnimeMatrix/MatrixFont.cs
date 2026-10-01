@@ -54,15 +54,15 @@ namespace GHelper.AnimeMatrix
                 using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) })
                 {
                     Logger.WriteLine("Getting: " + PackageUrl);
-                    await File.WriteAllBytesAsync(zip, await client.GetByteArrayAsync(PackageUrl));
+                    File.WriteAllBytes(zip, await client.GetByteArrayAsync(PackageUrl));
                 }
 
-                ZipFile.ExtractToDirectory(zip, temp, true);
+                ZipFile.ExtractToDirectory(zip, temp);
                 string msi = Directory.GetFiles(temp, "*.msi", SearchOption.AllDirectories)[0];
 
                 // administrative install just unpacks the font, without registering it in the system
                 using (var process = Process.Start(new ProcessStartInfo("msiexec", $"/a \"{msi}\" /qn TARGETDIR=\"{temp}\"") { CreateNoWindow = true }))
-                    if (process is not null) await processTask.Run(() => process.WaitForExit());
+                    if (process is not null) await Task.Run(() => process.WaitForExit());
 
                 Directory.CreateDirectory(Path.GetDirectoryName(fontFile)!);
                 File.Copy(Directory.GetFiles(temp, "*.otf", SearchOption.AllDirectories)[0], fontFile, true);
