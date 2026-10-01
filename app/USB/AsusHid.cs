@@ -216,7 +216,7 @@ public static class AsusHid
     {
         try
         {
-            var devices = DeviceList.Local.GetHidDevices(ASUS_ID).Where(d => d.CanOpen).ToList();
+            var devices = DeviceList.Local.GetHidDevices(ASUS_ID) .Where(d => d.TryOpen(out _)).ToList();
             Logger.WriteLine($"HID Scan: {devices.Count} openable ASUS device(s) (VID 0x{ASUS_ID:X4})");
 
             foreach (var device in devices)
