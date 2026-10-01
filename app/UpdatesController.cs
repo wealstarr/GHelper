@@ -425,7 +425,7 @@ namespace GHelper
             if (CM_Get_Device_ID_List_SizeW(out uint len, null, CM_GETIDLIST_FILTER_PRESENT) != 0 || len == 0) return Array.Empty<string>();
             var buffer = new char[len];
             if (CM_Get_Device_ID_ListW(null, buffer, len, CM_GETIDLIST_FILTER_PRESENT) != 0) return Array.Empty<string>();
-            return new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+            return new string(buffer).Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         const int CR_BUFFER_SMALL = 0x1A;
@@ -446,6 +446,6 @@ namespace GHelper
 
         static string? PropString(byte[]? buffer) => buffer is null ? null : Encoding.Unicode.GetString(buffer).TrimEnd('\0');
 
-        static string[] PropList(byte[]? buffer) => buffer is null ? Array.Empty<string>() : Encoding.Unicode.GetString(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+        static string[] PropList(byte[]? buffer) => buffer is null ? Array.Empty<string>() : Encoding.Unicode.GetString(buffer).Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
     }
 }
